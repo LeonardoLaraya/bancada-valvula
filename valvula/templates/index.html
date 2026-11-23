@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Teste da válvula proporcional</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='painel.css') }}">
+  <script defer src="{{ url_for('static', filename='painel.js') }}"></script>
+</head>
+<body>
+  <header class="top"><div class="wrap top-row">
+    <div class="identity"><span class="signal" aria-hidden="true">∿</span> Bancada de teste</div>
+    <span id="mode" class="mode {{ 'sim' if mock else '' }}">{{ 'MODO SIMULADO' if mock else 'HARDWARE REAL' }}</span>
+  </div></header>
+  <main class="wrap">
+    <div class="intro"><div><div class="model">EPV2-5031F2</div>
+      <h1>Teste da válvula proporcional</h1></div>
+      <span class="phase" id="phase" role="status">Conectando…</span>
+    </div>
+    <div class="grid">
+      <section class="card control" aria-labelledby="control-title">
+        <h2 id="control-title">Ajuste do sinal</h2>
+        <div class="readings"><div>
+          <label for="slider">Valor selecionado</label>
+          <div class="number"><output id="selected" for="slider">0</output><small>%</small></div>
+        </div><div class="volts"><span>Tensão selecionada estimada</span><strong id="selectedV">—</strong></div></div>
+        <input id="slider" type="range" min="0" max="100" step="1" value="0" aria-label="Percentual selecionado">
+        <div class="ticks" aria-hidden="true"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+        <p class="hint">A saída muda ao clicar em Aplicar.</p>
+        <div class="actions"><button id="apply" disabled>Aplicar</button><button id="stop" class="stop"><i aria-hidden="true"></i>PARAR E ZERAR</button></div>
+      </section>
+      <section class="card output" aria-labelledby="out-title">
+        <h2 id="out-title">Saída aplicada</h2>
+        <label>Percentual aplicado</label>
+        <div class="number"><span id="applied">—</span><small>%</small></div>
+        <meter id="meter" min="0" max="100" value="0" aria-label="Percentual aplicado"></meter>
+        <div class="output-v"><span>Tensão aplicada estimada</span><strong id="appliedV">—</strong></div>
+      </section>
+    </div>
+    <p class="notice"><b aria-hidden="true">!</b>A tensão exibida é estimada; confirme com multímetro</p>
+    <p id="feedback" role="alert"></p>
+    <div class="grid lower">
+      <section class="card"><h2>Calibração</h2>
+        <p id="cal-status" class="cal-status">Consultando calibração…</p>
+        <form id="cal"><label for="maximum">Tensão máxima medida</label>
+          <div class="form-row"><div class="field"><input id="maximum" type="number" lang="pt-BR" min="0.1" max="10" step="any" required><span>V</span></div>
+          <button class="secondary" id="save" disabled>Salvar calibração</button></div>
+        </form>
+      </section>
+      <section class="card"><h2>Últimos eventos</h2><ol id="events"></ol></section>
+    </div>
+    <footer><span>Raspberry Pi 5 · L298N / Canal A</span><span>PWM <b>GPIO18</b> · ENA <b>GPIO23</b> · <b id="freq">— Hz</b></span></footer>
+  </main>
+</body>
+</html>
