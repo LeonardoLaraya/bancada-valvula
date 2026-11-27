@@ -127,6 +127,17 @@ A verificação executa `pinctrl get 18`, lista `/sys/class/pwm/pwmchip*` e conf
 
 Abra [o painel local](http://127.0.0.1:5000) no Pi. Para abrir automaticamente na sessão gráfica com Chromium instalado, use `./run.sh --open-browser` se seu usuário já tiver as permissões de hardware. Com sudo, use `sudo --preserve-env=DISPLAY,WAYLAND_DISPLAY,XDG_RUNTIME_DIR,XAUTHORITY ./run.sh --open-browser` na sessão do operador. O Chromium roda com a identidade do operador. Em um terminal sem sessão gráfica, abra a URL manualmente no Pi. Para trocar a porta, acrescente `--port 5080`.
 
+## Atalho na tela do Raspberry
+
+Depois de instalar o projeto e configurar o PWM, crie o atalho uma vez no terminal do usuário da área de trabalho:
+
+```bash
+cd ~/bancada-valvula
+python3 scripts/instalar_atalho.py
+```
+
+Abra **Bancada da válvula** na área de trabalho. O terminal pode solicitar a senha do Raspberry e deve permanecer aberto enquanto o painel estiver em uso. O navegador abre em seguida. Se o navegador não abrir automaticamente, acesse `http://127.0.0.1:5000` no Raspberry. Para encerrar, use **PARAR E ZERAR** no painel e depois Ctrl+C no terminal. Se ocorrer um erro, o terminal mostra a mensagem e aguarda Enter antes de fechar.
+
 ## Ensaio com multímetro e calibração
 
 Antes de energizar, confira a montagem:
