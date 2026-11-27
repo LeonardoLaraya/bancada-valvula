@@ -84,19 +84,19 @@ class RaspberryPiHardware(HardwareController):
 
         self.values = Value
         # The gpiochip number also changes between Pi kernels.
-        matches = []
+        matches = {}
         for path in Path("/dev").glob("gpiochip[0-9]*"):
             with gpiod.Chip(str(path)) as gpio:
                 if (
                     gpio.get_info().label == "pinctrl-rp1"
                     and gpio.get_line_info(23).name == "GPIO23"
                 ):
-                    matches.append(path)
+                    matches.setdefault(path.stat().st_rdev, path)
         if len(matches) != 1:
             raise RuntimeError("GPIO23 não identificado de forma única no pinctrl-rp1.")
         settings = gpiod.LineSettings(direction=Direction.OUTPUT, output_value=Value.INACTIVE)
         self.line = gpiod.request_lines(
-            str(matches[0]), consumer="bancada-ena", config={23: settings}
+            str(next(iter(matches.values()))), consumer="bancada-ena", config={23: settings}
         )
         try:
             self.chip = detect_pwm()
